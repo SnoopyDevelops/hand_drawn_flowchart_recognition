@@ -1,0 +1,9 @@
+Pillow
+Werkzeug
+flask
+imutils
+numpy
+opencv-python
+pytesseract
+requests
+tabulate
