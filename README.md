@@ -1,9 +1,9 @@
 # HandWritten Flowchart Recognition with Flask Backend Service
  
  Sample Input Image
-![Sample Input Image](image3.png)
+![Sample Input Image](photo3.png)
 
-- command line: python flowchart_recognition.py "image file name"<br/>
+- command line: python flowchart_recognition.py "image file name" [parameters]<br/>
 If image file name were not given, it'll be asking image file name
 
 - GUI: python GUI.py
@@ -13,11 +13,10 @@ If image file name were not given, it'll be asking image file name
 Result
 
 | Id | Name | Position | Shape | Line |
-| -- | ---- | -------- | ----- | ---- |
-| 0 | xyz	| Inside | circle | LMN |
-| 1 | ABC | Inside | square | XYZ, LMN |
-| 5 | LMN | Inside | square | |
-| 8 | DEF | Outside | square | LMN |
+| - | - | - | - | - |
+| 0 | DATABASE| Inside | square |  |
+| 2 | LORD BALANCER | Inside | square | DATABASE |
+| 4 | LMN | Inside | square | LORD BALANCER|
 
 * Position: inside / outside
 * Shape: triangle / square / circle
@@ -30,4 +29,4 @@ parameters:
 - arrow: length of arrow
 
 Output Image for Sample Input Image
-![Output Image](image3out.png)
+![Output Image](photo3out.png)

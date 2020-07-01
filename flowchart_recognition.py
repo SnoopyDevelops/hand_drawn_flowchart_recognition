@@ -32,16 +32,11 @@ def distance(A, B, P):
 
 def flowchart(filename, padding=25, offset=10, arrow=30, gui=True):
     img = cv2.imread(filename, 0)
-    _, trunc = cv2.threshold(img, 111, 255, cv2.THRESH_TRUNC)
-    cv2.imwrite("trunc.png", trunc)
 
-    img = cv2.imread('trunc.png', 0)
-    # img = cv2.imread(filename)
+    thresh = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 111, 48)
+    cv2.imwrite('thresh.png', thresh)
+    img = cv2.imread('thresh.png')
 
-    _, binary = cv2.threshold(img, 95, 255, cv2.THRESH_BINARY)
-    cv2.imwrite("BINARY.png", binary)
-
-    img = cv2.imread('binary.png')
     image = img.copy()
     blur = cv2.GaussianBlur(image, (5, 5), 0)
 
@@ -55,10 +50,12 @@ def flowchart(filename, padding=25, offset=10, arrow=30, gui=True):
     # histogram
     clahe = cv2.createCLAHE(clipLimit=4.0, tileGridSize=(4, 4))
     cl = clahe.apply(gray)
+
     denoised_cl = cv2.fastNlMeansDenoising(cl, None, 270, 7, 21)
 
     # Otsu's thresholding
     blur = cv2.GaussianBlur(denoised_cl, (25, 25), 0)
+
     _, thresh = cv2.threshold(blur, 10, 100, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
 
     # detect edges
@@ -78,7 +75,6 @@ def flowchart(filename, padding=25, offset=10, arrow=30, gui=True):
 
     # contours = contours[0] if imutils.is_cv2() else contours[1]
 
-    # print('Text\tPosition\tShape\tLine')
     nodes, index, outside_texts, shapes, arrow_lines = {}, 1, {}, [], {}
     # loop over the contours
     for idx, contour in enumerate(contours):
@@ -150,7 +146,8 @@ def flowchart(filename, padding=25, offset=10, arrow=30, gui=True):
                     }
                     index += 1
                 else:
-                    if y == 0 or x == 0 or y+h == img.shape[1] or x + w == img.shape[0]:
+                    margin = 10
+                    if y <= margin or x <= margin or y+h >= img.shape[1]-margin or x+w >= img.shape[0]-margin:
                         continue
                     text_offset = 5
                     cropped = img[y-text_offset:y+h+text_offset, x-text_offset:x+w+text_offset]
@@ -287,10 +284,15 @@ def flowchart(filename, padding=25, offset=10, arrow=30, gui=True):
 if __name__ == '__main__':
     # flowchart(filename='image1.png')
     # flowchart(filename='image2.png')
-    # flowchart(filename='image3.png')
+    # flowchart(filename='image3.png', offset=5)
     # flowchart(filename='image4.png')
     # flowchart(filename='image5.png', arrow=5)
-    # flowchart(filename='image6.png')
+
+    # flowchart(filename='photo1.png')
+    # flowchart(filename='photo2.png', offset=5)
+    # flowchart(filename='photo3.png')
+    # flowchart(filename='photo4.png', arrow=25)
+    # flowchart(filename='photo5.png')
 
     if len(argv) > 1:
         ap = ArgumentParser()
