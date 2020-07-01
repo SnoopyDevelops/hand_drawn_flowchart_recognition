@@ -1,1 +1,0 @@
-{"Node": [{"Id": 0, "Name": "DATABASE", "Position": "Inside", "Shape": "square", "Line": ""}, {"Id": 2, "Name": "LORD BALANCER", "Position": "Inside", "Shape": "square", "Line": "DATABASE"}, {"Id": 4, "Name": "SERVER", "Position": "Inside", "Shape": "square", "Line": "LORD BALANCER"}]}
