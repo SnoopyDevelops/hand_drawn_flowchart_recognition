@@ -1,7 +1,7 @@
 # HandWritten Flowchart Recognition with Flask Backend Service
  
  Sample Input Image<br/>
-![Sample Input Image](photo3.png)
+![Sample Input Image](photo.png)
 
 - command line: python flowchart_recognition.py "image file name" [parameters]<br/>
 If image file name were not given, it'll be asking image file name
@@ -29,4 +29,4 @@ parameters:
 - arrow: length of arrow
 
 Output Image for Sample Input Image<br/>
-![Output Image](photo3out.png)
+![Output Image](photo_out.png)
