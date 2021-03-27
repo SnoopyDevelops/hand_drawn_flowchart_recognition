@@ -1,8 +1,8 @@
+import os
 from argparse import ArgumentParser
 from json import dump
 from math import sqrt
 from operator import itemgetter
-from os import remove
 from sys import argv
 
 import cv2
@@ -16,7 +16,7 @@ from tabulate import tabulate
 def contour_circumstance(contour):
     temp, circumstance = contour[0], 0
     for point in contour[1:]:
-        circumstance += sqrt((point[0][0] - temp[0][0])**2 + (point[0][1] - temp[0][1])**2)
+        circumstance += sqrt((point[0][0] - temp[0][0]) ** 2 + (point[0][1] - temp[0][1]) ** 2)
         temp = point
     return circumstance
 
@@ -100,7 +100,7 @@ def flowchart(filename, padding=25, offset=10, arrow=30, gui=True):
 
                 circumstance = contour_circumstance(contour)
 
-                if area/circumstance < 30:
+                if area / circumstance < 30:
                     shape = 'arrow'
                 else:
                     perimeter = cv2.arcLength(contour, True)
@@ -147,17 +147,17 @@ def flowchart(filename, padding=25, offset=10, arrow=30, gui=True):
                     index += 1
                 else:
                     margin = 10
-                    if y <= margin or x <= margin or y+h >= img.shape[1]-margin or x+w >= img.shape[0]-margin:
+                    if y <= margin or x <= margin or y + h >= img.shape[1] - margin or x + w >= img.shape[0] - margin:
                         continue
                     text_offset = 5
-                    cropped = img[y-text_offset:y+h+text_offset, x-text_offset:x+w+text_offset]
+                    cropped = img[y - text_offset:y + h + text_offset, x - text_offset:x + w + text_offset]
                     text = pytesseract.image_to_string(cropped)
                     if text != '':
                         shape = 'text'
                         outside_texts[idx] = text
                     else:
                         # print(idx)
-                        A, B, C, D = (x, y), (x, y+h), (x+w, y+h), (x+w, y)
+                        A, B, C, D = (x, y), (x, y + h), (x + w, y + h), (x + w, y)
                         start_point, end_point = None, None
                         for point in contour:
                             if point[0][0] < x + offset and point[0][1] < y + offset:
@@ -187,9 +187,9 @@ def flowchart(filename, padding=25, offset=10, arrow=30, gui=True):
 
                         start_contour_count, end_contour_count = 0, 0
                         for point in contour:
-                            if (point[0][0] - start_point[0])**2 + (point[0][1] - start_point[1])**2 < arrow**2:
+                            if (point[0][0] - start_point[0]) ** 2 + (point[0][1] - start_point[1]) ** 2 < arrow ** 2:
                                 start_contour_count += 1
-                            elif (point[0][0] - end_point[0])**2 + (point[0][1] - end_point[1])**2 < arrow**2:
+                            elif (point[0][0] - end_point[0]) ** 2 + (point[0][1] - end_point[1]) ** 2 < arrow ** 2:
                                 end_contour_count += 1
 
                         # print(idx, start_point, end_point)
@@ -204,11 +204,11 @@ def flowchart(filename, padding=25, offset=10, arrow=30, gui=True):
                 # print(idx, shape, area/circumstance)
                 cv2.drawContours(image, [contour], -1, (0, 255, 0), 2)
                 cv2.putText(
-                    img=image, text=' '.join([str(idx), shape]), org=(cx+10, cy-20),
+                    img=image, text=' '.join([str(idx), shape]), org=(cx + 10, cy - 20),
                     fontFace=cv2.FONT_HERSHEY_COMPLEX_SMALL, fontScale=1, color=(255, 0, 0), thickness=2
                 )
                 cv2.putText(
-                    img=image, text=text, org=(cx+10, cy + 40),
+                    img=image, text=text, org=(cx + 10, cy + 40),
                     fontFace=cv2.FONT_HERSHEY_COMPLEX_SMALL, fontScale=1, color=(255, 0, 0), thickness=2
                 )
 
@@ -274,7 +274,7 @@ def flowchart(filename, padding=25, offset=10, arrow=30, gui=True):
         cv2.waitKey(0)
 
     try:
-        remove("text.png")
+        os.remove("text.png")
     except:
         pass
 
@@ -287,7 +287,7 @@ if __name__ == '__main__':
 
         ap.add_argument('-f', '--filename', required=True)
         ap.add_argument('-p', '--padding', type=int, default=25, required=False)
-        ap.add_argument('-o', '--offset', type=int, default=10,  required=False)
+        ap.add_argument('-o', '--offset', type=int, default=10, required=False)
         ap.add_argument('-a', '--arrow', type=int, default=30, required=False)
 
         args = ap.parse_args()

@@ -1,5 +1,4 @@
-from os import remove
-from os.path import join
+import os
 
 from flask import request, jsonify
 from werkzeug.utils import secure_filename
@@ -30,7 +29,7 @@ def upload_file():
 
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
-        path = join(app.config['UPLOAD_FOLDER'], filename)
+        path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         # path = secure_filename(file.filename)
         file.save(path)
 
@@ -53,7 +52,7 @@ def upload_file():
             filename=path, padding=padding, offset=offset, arrow=arrow, gui=False
         )
 
-        # remove(path)
+        os.remove(path)
         resp = jsonify({'message': 'File successfully uploaded', 'data': nodes, 'status': 200})
         resp.status_code = 201
         return resp
